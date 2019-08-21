@@ -10,81 +10,81 @@ export class QuickCrypticoProtocol {
     return `${this.interpolationStart}${name}[${Id.get(10)}]${this.interpolationEnd}`;
   }
 
-  public encoder (data) {
+  public encoder (data: string) {
     return data;
   }
 
-  public decoder (data) {
+  public decoder (data: string) {
     return data;
   }
 
   public encode (data: any, name?: string) {
-    if (typeof data === 'object') {
-      let result = {
-        public: data,
-        private: {}
-      };
+    let result: { public: any, private?: any } = {
+      public: data,
+      private: {}
+    };
 
-      if (result.public instanceof Array) {
-        result.public.map((value, index) => {
-          const next = this.encode(value, index.toString());
-          if (typeof next === 'object') {
+    if (result.public instanceof Array) {
+      result.public = [...result.public];
+      result.public = result.public.map((value, index) => {
+        const tmp = this.encode(value, index.toString());
+        result.private = {
+          ...result.private,
+          ...tmp.private
+        };
+        return tmp.public;
+      });
+    } else if (result.public instanceof Object) {
+      result.public = {...result.public};
+      if (result.public.private === true) {
+        const id = this.generateId(name || 'public');
+        result.private = {
+          ...result.private,
+          [id]: result.public
+        };
+        result.public = id;
+      } else {
+        Object.keys(result.public)
+          .forEach((key) => {
+            const tmp = this.encode(result.public[key], key);
             result.private = {
               ...result.private,
-              ...next.private
+              ...tmp.private
             };
-            return next.public;
-          }
-          return next;
-        });
-      } else if (result.public instanceof Object) {
-        if (
-          result.public.hasOwnProperty('private') && !!result.public['private']
-        ) {
-          const id = this.generateId(name || 'public');
-          result.private[id] = result.public.value;
-          result.public.value = id;
-        } else {
-          Object.keys(result.public)
-            .forEach((key) => {
-              if (result.public.hasOwnProperty(key)) {
-                const next = this.encode(result.public[key], key);
-                if (typeof next === 'object') {
-                  result.private = {
-                    ...result.private,
-                    ...next.private
-                  };
-                  result.public[key] = next.public;
-                }
-              }
-            });
-        }
+            result.public[key] = tmp.public;
+          });
       }
-      if (!name) {
-        result.private = this.encoder(this.serialize(result.private));
-      }
-      return result;
     }
-    return data;
+
+    if (!name) {
+      if (Object.keys(result.private).length) {
+        result.private = this.encoder(this.serialize(result.private));
+      } else {
+        delete result.private;
+      }
+    }
+
+    return result;
   }
 
   public decode (data) {
-    if (
-      typeof data === 'object'
-      && data.hasOwnProperty('public')
-      && data.hasOwnProperty('private')
-    ) {
-      let _result = JSON.stringify(data.public);
-      const _private = this.deserialize(this.decoder(data.private));
+    if (data instanceof Object && data.hasOwnProperty('public')) {
+      if (data.hasOwnProperty('private')) {
+        let _result = JSON.stringify(data.public);
+        const _private = this.deserialize(this.decoder(data.private));
 
-      Object.keys(_private)
-        .forEach((key) => {
-          _result = _result.replace(`"${key}"`, JSON.stringify(_private[key]));
-        });
+        Object.keys(_private)
+          .forEach((key) => {
+            _result = _result.replace(`"${key}"`, JSON.stringify(_private[key]));
+          });
 
-      return JSON.parse(_result);
+        return JSON.parse(_result);
+      } else {
+        return data.public;
+      }
+    } else {
+      return data;
     }
-    return data;
   }
 
   public serialize (data: any): string {
