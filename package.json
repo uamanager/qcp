@@ -24,7 +24,7 @@
     "commit": "git cz",
     "prepare": "yarn build",
     "postversion": "git push && git push --tags",
-    "release": "standard-version && git push --follow-tags origin master",
+    "release": "standard-version && git push --follow-tags origin master && npm login && npm publish",
     "test": "jest && yarn build"
   },
   "dependencies": {},
