@@ -4,5 +4,9 @@ module.exports = {
   ],
   "transform": {
     "^.+\\.tsx?$": "ts-jest"
-  }
+  },
+  "collectCoverage": true,
+  "coveragePathIgnorePatterns": ["/node_modules/", "/tests/"],
+  "coverageReporters": ["text", "text-summary"],
+  "verbose": true
 };
