@@ -1,4 +1,4 @@
-import {Id} from '../src';
+import {Id} from '../src/id';
 
 const isArrayUnique = arr => Array.isArray(arr) && new Set(arr).size === arr.length;
 

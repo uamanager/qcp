@@ -1,2 +1,6 @@
 export * from './protocol';
-export * from './id';
+
+/**
+ * arac - Async Role Based Access Control
+ * ## Installation
+ */

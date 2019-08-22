@@ -1,5 +1,6 @@
 {
   "name": "qcp",
+  "description": "Quick Cryptico Protocol",
   "version": "0.1.0",
   "author": "uamanager",
   "license": "MIT",
@@ -16,16 +17,16 @@
     "url": "https://github.com/uamanager/qcp"
   },
   "engines": {
-    "node": ">=6.0.0"
+    "node": ">=10.16.3"
   },
   "scripts": {
     "prebuild": "rimraf lib",
     "build": "rollup -c rollup.config.ts",
-    "commit": "git cz",
+    "commit": "git cz -a",
     "prepare": "yarn build",
     "postversion": "git push && git push --tags",
     "release": "standard-version && git push --follow-tags origin master && npm login && npm publish",
-    "test": "jest && yarn build"
+    "test": "yarn build && jest"
   },
   "dependencies": {},
   "devDependencies": {
@@ -37,6 +38,7 @@
     "cz-conventional-changelog": "3.0.2",
     "husky": "^3.0.3",
     "jest": "^24.8.0",
+    "jest-junit": "^7.0.0",
     "lodash.camelcase": "^4.3.0",
     "rimraf": "^2.6.1",
     "rollup": "^1.19.4",
@@ -60,5 +62,19 @@
       "pre-commit": "yarn test",
       "pre-push": "yarn test"
     }
-  }
+  },
+  "keywords": [
+    "qcp",
+    "encode",
+    "decode",
+    "cryptico",
+    "quick",
+    "protocol",
+    "rsa",
+    "sighning",
+    "key",
+    "encrypt",
+    "decrypt",
+    "express"
+  ]
 }
