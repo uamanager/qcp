@@ -28,7 +28,7 @@ import {Id} from './id';
 //  To mark object as private just add `private: true` property.
 //  Example:
 // ```typescript
-//     // this object won't be encoded
+//     // this object won't be encrypted
 //     const example1 = {
 //         foo: 'bar'
 //     };
@@ -46,10 +46,10 @@ export class QuickCrypticoProtocol {
 
   constructor () {}
 
-  //# encode
+  //# encrypt
   // Main method for encryption of object by protocol.
   // Examples:
-  public encode (data: any, name?: string) {
+  public encrypt (data: any, name?: string) {
     let result: { public: any, private?: any } = {
       public: data,
       private: {}
@@ -92,7 +92,7 @@ export class QuickCrypticoProtocol {
       // ```
       result.public = [...result.public];
       result.public = result.public.map((value, index) => {
-        const tmp = this.encode(value, index.toString());
+        const tmp = this.encrypt(value, index.toString());
         result.private = {
           ...result.private,
           ...tmp.private
@@ -154,7 +154,7 @@ export class QuickCrypticoProtocol {
         // ```
         Object.keys(result.public)
           .forEach((key) => {
-            const tmp = this.encode(result.public[key], key);
+            const tmp = this.encrypt(result.public[key], key);
             result.private = {
               ...result.private,
               ...tmp.private
@@ -166,7 +166,7 @@ export class QuickCrypticoProtocol {
 
     if (!name) {
       if (Object.keys(result.private).length) {
-        result.private = this.encoder(this.serialize(result.private));
+        result.private = this.encryptor(this.serialize(result.private));
       } else {
         delete result.private;
       }
@@ -175,14 +175,14 @@ export class QuickCrypticoProtocol {
     return result;
   }
 
-  //# decode
-  // Main method for decryption of object by protocol. Works the same as `encode`
+  //# decrypt
+  // Main method for decryption of object by protocol. Works the same as `encrypt`
   // method but in reverse order. Not throwing error if passed data is not by protocol.
-  public decode (data) {
+  public decrypt (data) {
     if (data instanceof Object && data.hasOwnProperty('public')) {
       if (data.hasOwnProperty('private')) {
         let _result = JSON.stringify(data.public);
-        const _private = this.deserialize(this.decoder(data.private));
+        const _private = this.deserialize(this.decryptor(data.private));
 
         Object.keys(_private)
           .forEach((key) => {
@@ -198,7 +198,7 @@ export class QuickCrypticoProtocol {
     }
   }
 
-  //# encoder/decoder
+  //# encryptor/decryptor
   // Methods that should be overwritten to support encryption.
   // Example:
   // ```typescript
@@ -210,23 +210,23 @@ export class QuickCrypticoProtocol {
   // 		super();
   // 	}
   //
-  // // `encoder` - method for data encrypt.
+  // // `encryptor` - method for data encrypt.
   // // By default returns the same data as was passed.
-  // 	public encoder (data: string) {
+  // 	public encryptor (data: string) {
   // 		return cryptico.encrypt(data, this.publicKey).cipher;
   // 	}
-  // // `decoder` - method for data decrypt.
+  // // `decryptor` - method for data decrypt.
   // // By default returns the same data as was passed.
-  // 	public encoder (data: string) {
+  // 	public decryptor (data: string) {
   // 		return cryptico.decrypt(data, this.privateKey).plaintext;
   // 	}
   // }
   // ```
-  public encoder (data: string) {
+  public encryptor (data: string) {
     return data;
   }
 
-  public decoder (data: string) {
+  public decryptor (data: string) {
     return data;
   }
 

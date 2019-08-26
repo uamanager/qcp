@@ -28,35 +28,35 @@ describe('Quick Cryptico Protocol', () => {
   });
 });
 
-describe('Encode', () => {
-  it('not encodes public primitive but wraps in container', () => {
+describe('Encrypt', () => {
+  it('not encrypts public primitive but wraps in container', () => {
     const example = 'test string';
-    const encoded = qcp.encode(example);
-    expect(encoded).toMatchObject({public: example});
+    const encrypted = qcp.encrypt(example);
+    expect(encrypted).toMatchObject({public: example});
   });
 
-  it('not encodes public array but wraps in container', () => {
+  it('not encrypts public array but wraps in container', () => {
     const example = ['test string'];
-    const encoded = qcp.encode(example);
-    expect(encoded).toMatchObject({public: example});
+    const encrypted = qcp.encrypt(example);
+    expect(encrypted).toMatchObject({public: example});
   });
 
-  it('not encodes public object but wraps in container', () => {
+  it('not encrypts public object but wraps in container', () => {
     const example = {foo: 'bar'};
-    const encoded = qcp.encode(example);
-    expect(encoded).toMatchObject({public: example});
+    const encrypted = qcp.encrypt(example);
+    expect(encrypted).toMatchObject({public: example});
   });
 
-  it('encodes private object', () => {
+  it('encrypts private object', () => {
     const example = {
       foo: 'bar',
       test: 3,
       private: true
     };
-    const encoded = qcp.encode(example);
+    const encrypted = qcp.encrypt(example);
 
-    expect(encoded.public).toBe('[id]public');
-    expect(JSON.parse(encoded.private)).toMatchObject({
+    expect(encrypted.public).toBe('[id]public');
+    expect(JSON.parse(encrypted.private)).toMatchObject({
       '[id]public': {
         foo: 'bar',
         test: 3,
@@ -65,7 +65,7 @@ describe('Encode', () => {
     });
   });
 
-  it('not encodes root public object but encodes nested private objects', () => {
+  it('not encrypts root public object but encrypts nested private objects', () => {
     const example = {
       foo: 'bar',
       test1: {
@@ -79,13 +79,13 @@ describe('Encode', () => {
         private: true
       }
     };
-    const encoded = qcp.encode(example);
-    expect(encoded.public).toMatchObject({
+    const encrypted = qcp.encrypt(example);
+    expect(encrypted.public).toMatchObject({
       foo: 'bar',
       test1: '[id]test1',
       test2: '[id]test2'
     });
-    expect(JSON.parse(encoded.private)).toMatchObject({
+    expect(JSON.parse(encrypted.private)).toMatchObject({
       '[id]test1': {
         foo: 'bar',
         test: 1,
@@ -99,7 +99,7 @@ describe('Encode', () => {
     });
   });
 
-  it('encodes root private object with nested private objects', () => {
+  it('encrypts root private object with nested private objects', () => {
     const example = {
       foo: 'bar',
       private: true,
@@ -114,10 +114,10 @@ describe('Encode', () => {
         private: true
       }
     };
-    const encoded = qcp.encode(example);
+    const encrypted = qcp.encrypt(example);
 
-    expect(encoded.public).toEqual('[id]public');
-    expect(JSON.parse(encoded.private)).toMatchObject({
+    expect(encrypted.public).toEqual('[id]public');
+    expect(JSON.parse(encrypted.private)).toMatchObject({
       '[id]public': {
         foo: 'bar',
         private: true,
@@ -135,7 +135,7 @@ describe('Encode', () => {
     });
   });
 
-  it('encodes private objects in array', () => {
+  it('encrypts private objects in array', () => {
     const example = [
       {
         foo: 'bar',
@@ -149,10 +149,10 @@ describe('Encode', () => {
       },
       'test'
     ];
-    const encoded = qcp.encode(example);
+    const encrypted = qcp.encrypt(example);
 
-    expect(encoded.public).toEqual(expect.arrayContaining(['[id]0', '[id]1', 'test']));
-    expect(JSON.parse(encoded.private)).toMatchObject({
+    expect(encrypted.public).toEqual(expect.arrayContaining(['[id]0', '[id]1', 'test']));
+    expect(JSON.parse(encrypted.private)).toMatchObject({
       '[id]0': {
         foo: 'bar',
         test: 1,
@@ -167,59 +167,59 @@ describe('Encode', () => {
   });
 });
 
-describe('Decode', () => {
-  it('not decodes primitive', () => {
+describe('Decrypt', () => {
+  it('not decrypts primitive', () => {
     const example = 'test string';
-    const decoded = qcp.decode(example);
-    expect(decoded).toEqual(example);
+    const decrypted = qcp.decrypt(example);
+    expect(decrypted).toEqual(example);
   });
 
-  it('not decodes array', () => {
+  it('not decrypts array', () => {
     const example = ['test string'];
-    const decoded = qcp.decode(example);
-    expect(decoded).toEqual(expect.arrayContaining(example));
+    const decrypted = qcp.decrypt(example);
+    expect(decrypted).toEqual(expect.arrayContaining(example));
   });
 
-  it('not decodes object', () => {
+  it('not decrypts object', () => {
     const example = {foo: 'bar'};
-    const decoded = qcp.decode(example);
-    expect(decoded).toMatchObject(example);
+    const decrypted = qcp.decrypt(example);
+    expect(decrypted).toMatchObject(example);
   });
 
-  it('decodes primitive wrapped in container', () => {
+  it('decrypts primitive wrapped in container', () => {
     const example = 'test string';
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
-    expect(decoded).toEqual(example);
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
+    expect(decrypted).toEqual(example);
   });
 
-  it('decodes array wrapped in container', () => {
+  it('decrypts array wrapped in container', () => {
     const example = ['test string'];
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
-    expect(decoded).toEqual(expect.arrayContaining(example));
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
+    expect(decrypted).toEqual(expect.arrayContaining(example));
   });
 
-  it('decodes object wrapped in container', () => {
+  it('decrypts object wrapped in container', () => {
     const example = {foo: 'bar'};
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
-    expect(decoded).toMatchObject(example);
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
+    expect(decrypted).toMatchObject(example);
   });
 
-  it('decodes private object', () => {
+  it('decrypts private object', () => {
     const example = {
       foo: 'bar',
       test: 3,
       private: true
     };
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
 
-    expect(decoded).toMatchObject(example);
+    expect(decrypted).toMatchObject(example);
   });
 
-  it('decodes object with nested private objects', () => {
+  it('decrypts object with nested private objects', () => {
     const example = {
       foo: 'bar',
       test1: {
@@ -233,13 +233,13 @@ describe('Decode', () => {
         private: true
       }
     };
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
 
-    expect(decoded).toMatchObject(example);
+    expect(decrypted).toMatchObject(example);
   });
 
-  it('decodes root object with nested private objects', () => {
+  it('decrypts root object with nested private objects', () => {
     const example = {
       foo: 'bar',
       private: true,
@@ -254,13 +254,13 @@ describe('Decode', () => {
         private: true
       }
     };
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
 
-    expect(decoded).toMatchObject(example);
+    expect(decrypted).toMatchObject(example);
   });
 
-  it('encodes private objects in array', () => {
+  it('decrypts private objects in array', () => {
     const example = [
       {
         foo: 'bar',
@@ -274,9 +274,9 @@ describe('Decode', () => {
       },
       'test'
     ];
-    const encoded = qcp.encode(example);
-    const decoded = qcp.decode(encoded);
+    const encrypted = qcp.encrypt(example);
+    const decrypted = qcp.decrypt(encrypted);
 
-    expect(decoded).toEqual(expect.arrayContaining(example));
+    expect(decrypted).toEqual(expect.arrayContaining(example));
   });
 });

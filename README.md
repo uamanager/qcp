@@ -38,7 +38,7 @@ And vice versa.
  To mark object as private just add `private: true` property.
  Example:
 ```typescript
-    // this object won't be encoded
+    // this object won't be encrypted
     const example1 = {
         foo: 'bar'
     };
@@ -50,7 +50,7 @@ And vice versa.
     };
 ```
 
-### <a name="encode" href="https://github.com/uamanager/qcp/blob/master/src/protocol.ts#L49">`encode`</a>
+### <a name="encrypt" href="https://github.com/uamanager/qcp/blob/master/src/protocol.ts#L49">`encrypt`</a>
 Main method for encryption of object by protocol.
 Examples:
 
@@ -135,11 +135,11 @@ const encoded = qcp.encode(example);
 // }
 ```
 
-### <a name="decode" href="https://github.com/uamanager/qcp/blob/master/src/protocol.ts#L178">`decode`</a>
-Main method for decryption of object by protocol. Works the same as `encode`
+### <a name="decrypt" href="https://github.com/uamanager/qcp/blob/master/src/protocol.ts#L178">`decrypt`</a>
+Main method for decryption of object by protocol. Works the same as `encrypt`
 method but in reverse order. Not throwing error if passed data is not by protocol.
 
-### <a name="encoder/decoder" href="https://github.com/uamanager/qcp/blob/master/src/protocol.ts#L201">`encoder/decoder`</a>
+### <a name="encryptor/decryptor" href="https://github.com/uamanager/qcp/blob/master/src/protocol.ts#L201">`encryptor/decryptor`</a>
 Methods that should be overwritten to support encryption.
 Example:
 ```typescript
@@ -151,14 +151,14 @@ export class Protocol extends QuickCrypticoProtocol {
 		super();
 	}
 
-// `encoder` - method for data encrypt.
+// `encryptor` - method for data encrypt.
 // By default returns the same data as was passed.
-	public encoder (data: string) {
+	public encryptor (data: string) {
 		return cryptico.encrypt(data, this.publicKey).cipher;
 	}
-// `decoder` - method for data decrypt.
+// `decryptor` - method for data decrypt.
 // By default returns the same data as was passed.
-	public encoder (data: string) {
+	public decryptor (data: string) {
 		return cryptico.decrypt(data, this.privateKey).plaintext;
 	}
 }
