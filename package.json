@@ -1,9 +1,12 @@
 {
-  "name": "qcp",
+  "name": "@uamanager/qcp",
   "description": "Quick Cryptico Protocol",
   "version": "0.1.1",
-  "author": "uamanager",
-  "license": "MIT",
+  "author": {
+    "name": "Ivan Panarin",
+    "email": "faradey.ivan@gmail.com"
+  },
+  "license": "GPL-3.0-or-later",
   "private": false,
   "main": "lib/qcp.js",
   "browser": "lib/qcp.umd.js",
@@ -26,9 +29,12 @@
     "prepare": "yarn build",
     "postversion": "git push && git push --tags",
     "release": "standard-version && git push --follow-tags origin master && npm login && npm publish",
-    "test": "yarn build && jest"
+    "test": "yarn build && jest",
+    "docs": "transcribe --url https://github.com/uamanager/qcp/blob/master/{filename}#L{line} --prefix '//' --insert-into README.md -- src/index.ts src/protocol.ts"
   },
-  "dependencies": {},
+  "dependencies": {
+    "transcribe": "^1.1.2"
+  },
   "devDependencies": {
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
@@ -59,7 +65,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn test",
+      "pre-commit": "yarn docs && yarn test",
       "pre-push": "yarn test"
     }
   },
