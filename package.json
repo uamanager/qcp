@@ -20,9 +20,6 @@
     "type": "git",
     "url": "https://github.com/uamanager/qcp"
   },
-  "engines": {
-    "node": ">=10.16.3"
-  },
   "scripts": {
     "prebuild": "rimraf lib",
     "build": "rollup -c rollup.config.ts",
