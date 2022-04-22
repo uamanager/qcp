@@ -40,7 +40,7 @@
     "@types/node": "12.20.48",
     "commitizen": "4.1.2",
     "cz-conventional-changelog": "3.2.0",
-    "husky": "4.2.5",
+    "husky": "7.0.4",
     "jest": "26.0.1",
     "jest-junit": "10.0.0",
     "lodash.camelcase": "4.3.0",
