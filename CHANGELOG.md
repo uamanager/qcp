@@ -13,8 +13,6 @@ All notable changes to this project will be documented in this file. See [standa
 encoder\decoder methods
 names changed to encryptor/decryptor
 
-fix VK-10
-
 * encrypt/decrypt ([e23683a](https://github.com/uamanager/qcp/commit/e23683a))
 
 ### [0.1.1](https://github.com/uamanager/qcp/compare/v0.1.0...v0.1.1) (2019-08-22)
@@ -27,8 +25,6 @@ fix VK-10
 * **quickcrypticoprotocol:** Encode method now encodes object which contains private flag instead of encoding
 value property of such object.
 Decode method updated to support this approach.
-
-re VK-10
 
 ### Bug Fixes
 

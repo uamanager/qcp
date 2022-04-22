@@ -24,47 +24,39 @@
     "prebuild": "rimraf lib",
     "build": "rollup -c rollup.config.ts",
     "commit": "git cz -a",
-    "prepare": "yarn build",
+    "prepare": "husky install && yarn build",
     "postversion": "git push && git push --tags",
     "release": "standard-version && git push --follow-tags origin master && npm login && npm publish --access public",
     "test": "yarn build && jest",
     "docs": "transcribe --url https://github.com/uamanager/qcp/blob/master/{filename}#L{line} --prefix '//' --insert-into README.md -- src/index.ts src/protocol.ts"
   },
   "dependencies": {
-    "transcribe": "^1.1.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "8.3.5",
-    "@commitlint/config-conventional": "8.3.4",
-    "@types/jest": "25.2.3",
-    "@types/node": "12.20.48",
-    "commitizen": "4.1.2",
-    "cz-conventional-changelog": "3.2.0",
-    "husky": "4.2.5",
-    "jest": "26.0.1",
-    "jest-junit": "10.0.0",
-    "lodash.camelcase": "4.3.0",
+    "@commitlint/cli": "16.2.3",
+    "@commitlint/config-conventional": "16.2.1",
+    "@rollup/plugin-commonjs": "21.1.0",
+    "@rollup/plugin-json": "4.1.0",
+    "@rollup/plugin-node-resolve": "13.2.1",
+    "@types/jest": "27.4.1",
+    "@types/node": "17.0.25",
+    "commitizen": "4.2.4",
+    "cz-conventional-changelog": "3.3.0",
+    "husky": "7.0.4",
+    "jest": "27.5.1",
+    "jest-junit": "13.2.0",
     "rimraf": "3.0.2",
     "rollup": "2.70.2",
-    "rollup-plugin-commonjs": "10.1.0",
-    "rollup-plugin-json": "4.0.0",
-    "rollup-plugin-node-resolve": "5.2.0",
-    "rollup-plugin-sourcemaps": "0.6.2",
-    "standard-version": "8.0.0",
-    "rollup-plugin-typescript2": "0.27.1",
-    "ts-jest": "26.5.6",
-    "typescript": "3.9.3"
+    "rollup-plugin-sourcemaps": "0.6.3",
+    "rollup-plugin-typescript2": "0.31.2",
+    "standard-version": "9.3.2",
+    "transcribe": "1.1.2",
+    "ts-jest": "27.1.4",
+    "typescript": "4.6.3"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "yarn docs && yarn test",
-      "pre-push": "yarn test"
     }
   },
   "keywords": [
