@@ -1,7 +1,7 @@
 {
   "name": "qcp",
   "description": "Quick Cryptico Protocol",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": {
     "name": "Ivan Panarin",
     "email": "faradey.ivan@gmail.com"
@@ -30,8 +30,7 @@
     "test": "yarn build && jest",
     "docs": "transcribe --url https://github.com/uamanager/qcp/blob/master/{filename}#L{line} --prefix '//' --insert-into README.md -- src/index.ts src/protocol.ts"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@commitlint/cli": "16.2.3",
     "@commitlint/config-conventional": "16.2.1",
