@@ -47,7 +47,7 @@
     "rimraf": "3.0.2",
     "rollup": "2.78.0",
     "rollup-plugin-sourcemaps": "0.6.3",
-    "rollup-plugin-typescript2": "0.32.1",
+    "rollup-plugin-typescript2": "0.33.0",
     "standard-version": "9.5.0",
     "transcribe": "1.1.2",
     "ts-jest": "28.0.8",
