@@ -50,7 +50,7 @@
     "rollup-plugin-typescript2": "0.34.0",
     "standard-version": "9.5.0",
     "transcribe": "1.1.2",
-    "ts-jest": "29.0.0",
+    "ts-jest": "29.0.1",
     "typescript": "4.8.3"
   },
   "config": {
